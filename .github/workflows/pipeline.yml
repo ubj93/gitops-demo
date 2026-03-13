@@ -18,5 +18,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run tests
+        run: pytest test_device_report.py -v
+
       - name: Run fleet report
         run: python device_report.py
