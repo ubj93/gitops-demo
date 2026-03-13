@@ -1,5 +1,8 @@
 # device_report.py
-# Simulates a CPE automation script — generates a basic fleet summary report
+import os
+
+# In a real pipeline this would be a live Jamf API token
+api_token = os.environ.get("JAMF_API_TOKEN")
 
 devices = [
     {"name": "mac-001", "os": "14.4", "status": "compliant"},
@@ -7,8 +10,14 @@ devices = [
     {"name": "mac-003", "os": "14.4", "status": "compliant"},
 ]
 
-def generate_report(devices):
+def generate_report(devices, token=None):
     print("=== Fleet Compliance Report ===")
+
+    if token:
+        print(f"Authenticated: YES (token loaded from environment)")
+    else:
+        print("WARNING: No API token found — running unauthenticated")
+
     compliant = [d for d in devices if d["status"] == "compliant"]
     non_compliant = [d for d in devices if d["status"] == "non-compliant"]
 
@@ -22,4 +31,4 @@ def generate_report(devices):
             print(f"  - {d['name']} (macOS {d['os']})")
 
 if __name__ == "__main__":
-    generate_report(devices)
+    generate_report(devices, token=api_token)
